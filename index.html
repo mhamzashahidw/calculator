@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculator</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f3f4f6;
+      font-family: Arial, sans-serif;
+    }
+    .calculator {
+      width: 320px;
+      background: #1f2937;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column; /* FIX: stack display above buttons */
+    }
+    .display {
+      background: #ffffff;
+      color: #000000;
+      font-size: 2rem;
+      text-align: right;
+      padding: 20px;
+      border: none;
+      width: 100%;
+      height: 60px;       /* FIX: ensure visible space */
+      box-sizing: border-box;
+    }
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      flex: 1; /* take remaining space below */
+    }
+    button {
+      font-size: 1.2rem;
+      padding: 20px;
+      border: 1px solid #374151;
+      background: #1f2937;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #374151;
+    }
+    .operator {
+      background: #f59e0b;
+      color: black;
+      font-weight: bold;
+    }
+    .operator:hover {
+      background: #d97706;
+    }
+    .equal {
+      grid-column: span 2;
+      background: #10b981;
+      color: black;
+      font-weight: bold;
+    }
+    .equal:hover {
+      background: #059669;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <input type="text" id="display" class="display" readonly>
+    <div class="buttons">
+      <button onclick="clearDisplay()">C</button>
+      <button onclick="deleteChar()">DEL</button>
+      <button onclick="appendChar('/')" class="operator">÷</button>
+      <button onclick="appendChar('*')" class="operator">×</button>
+
+      <button onclick="appendChar('7')">7</button>
+      <button onclick="appendChar('8')">8</button>
+      <button onclick="appendChar('9')">9</button>
+      <button onclick="appendChar('-')" class="operator">−</button>
+
+      <button onclick="appendChar('4')">4</button>
+      <button onclick="appendChar('5')">5</button>
+      <button onclick="appendChar('6')">6</button>
+      <button onclick="appendChar('+')" class="operator">+</button>
+
+      <button onclick="appendChar('1')">1</button>
+      <button onclick="appendChar('2')">2</button>
+      <button onclick="appendChar('3')">3</button>
+      <button onclick="calculate()" class="equal">=</button>
+
+      <button onclick="appendChar('0')">0</button>
+      <button onclick="appendChar('.')">.</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById('display');
+
+    function appendChar(char) {
+      display.value += char;
+    }
+
+    function clearDisplay() {
+      display.value = '';
+    }
+
+    function deleteChar() {
+      display.value = display.value.slice(0, -1);
+    }
+
+    function calculate() {
+      try {
+        display.value = eval(display.value);
+      } catch {
+        display.value = 'Error';
+      }
+    }
+
+    // Keyboard Support
+    document.addEventListener('keydown', (event) => {
+      event.preventDefault(); // prevent typing directly
+      const key = event.key;
+      if (!isNaN(key) || ['+', '-', '*', '/', '.'].includes(key)) {
+        appendChar(key);
+      } else if (key === 'Enter') {
+        calculate();
+      } else if (key === 'Backspace') {
+        deleteChar();
+      } else if (key.toLowerCase() === 'c') {
+        clearDisplay();
+      }
+    });
+  </script>
+</body>
+</html>
