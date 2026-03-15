@@ -3,119 +3,185 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculator</title>
+  <title>Premium Calculator</title>
   <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background: #f3f4f6;
-      font-family: Arial, sans-serif;
+      /* A sleek dark gradient background */
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      font-family: 'Helvetica Neue', Arial, sans-serif;
     }
+
     .calculator {
-      width: 320px;
-      background: #1f2937;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      overflow: hidden;
+      width: 340px;
+      background: #000000;
+      padding: 25px 20px;
+      border-radius: 40px;
+      /* Soft shadow for 3D depth */
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), inset 0 2px 2px rgba(255, 255, 255, 0.1);
       display: flex;
-      flex-direction: column; /* FIX: stack display above buttons */
+      flex-direction: column;
     }
+
+    /* The Screen Area */
+    .display-container {
+      margin-bottom: 20px;
+      padding: 10px;
+    }
+
     .display {
-      background: #ffffff;
-      color: #000000;
-      font-size: 2rem;
+      background: transparent;
+      color: #ffffff;
+      font-size: 4rem;
+      font-weight: 300;
       text-align: right;
-      padding: 20px;
       border: none;
       width: 100%;
-      height: 60px;       /* FIX: ensure visible space */
-      box-sizing: border-box;
+      outline: none;
     }
+
+    /* The Button Grid */
     .buttons {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      flex: 1; /* take remaining space below */
+      gap: 12px;
     }
+
     button {
-      font-size: 1.2rem;
-      padding: 20px;
-      border: 1px solid #374151;
-      background: #1f2937;
-      color: white;
+      font-size: 1.5rem;
+      border: none;
+      border-radius: 50%; /* Makes buttons perfect circles */
+      aspect-ratio: 1 / 1;
       cursor: pointer;
-      transition: background 0.2s;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
-    button:hover {
-      background: #374151;
+
+    /* Standard Number Buttons (Dark Grey) */
+    .btn-num {
+      background: #333333;
+      color: white;
     }
-    .operator {
-      background: #f59e0b;
-      color: black;
-      font-weight: bold;
+    .btn-num:hover {
+      background: #4b4b4b;
     }
-    .operator:hover {
-      background: #d97706;
+
+    /* Top Row Buttons (Light Grey) */
+    .btn-top {
+      background: #a5a5a5;
+      color: #000000;
     }
-    .equal {
+    .btn-top:hover {
+      background: #d4d4d4;
+    }
+
+    /* Math Operators (Orange) */
+    .btn-operator {
+      background: #ff9f0a;
+      color: white;
+      font-size: 1.8rem;
+    }
+    .btn-operator:hover {
+      background: #ffb444;
+    }
+
+    /* The Zero Button spans 2 columns like a real calculator */
+    .zero {
       grid-column: span 2;
-      background: #10b981;
-      color: black;
-      font-weight: bold;
-    }
-    .equal:hover {
-      background: #059669;
+      border-radius: 40px; /* Capsule shape instead of circle */
+      aspect-ratio: auto;
+      justify-content: flex-start;
+      padding-left: 30px;
     }
   </style>
 </head>
 <body>
+
   <div class="calculator">
-    <input type="text" id="display" class="display" readonly>
-    <div class="buttons">
-      <button onclick="clearDisplay()">C</button>
-      <button onclick="deleteChar()">DEL</button>
-      <button onclick="appendChar('/')" class="operator">÷</button>
-      <button onclick="appendChar('*')" class="operator">×</button>
-
-      <button onclick="appendChar('7')">7</button>
-      <button onclick="appendChar('8')">8</button>
-      <button onclick="appendChar('9')">9</button>
-      <button onclick="appendChar('-')" class="operator">−</button>
-
-      <button onclick="appendChar('4')">4</button>
-      <button onclick="appendChar('5')">5</button>
-      <button onclick="appendChar('6')">6</button>
-      <button onclick="appendChar('+')" class="operator">+</button>
-
-      <button onclick="appendChar('1')">1</button>
-      <button onclick="appendChar('2')">2</button>
-      <button onclick="appendChar('3')">3</button>
-      <button onclick="calculate()" class="equal">=</button>
-
-      <button onclick="appendChar('0')">0</button>
-      <button onclick="appendChar('.')">.</button>
+    
+    <div class="display-container">
+      <input type="text" id="display" class="display" value="0" readonly>
     </div>
+
+    <div class="buttons">
+      <button onclick="clearDisplay()" class="btn-top">AC</button>
+      <button onclick="deleteChar()" class="btn-top">DEL</button>
+      <button onclick="appendChar('%')" class="btn-top">%</button>
+      <button onclick="appendChar('/')" class="btn-operator">÷</button>
+
+      <button onclick="appendChar('7')" class="btn-num">7</button>
+      <button onclick="appendChar('8')" class="btn-num">8</button>
+      <button onclick="appendChar('9')" class="btn-num">9</button>
+      <button onclick="appendChar('*')" class="btn-operator">×</button>
+
+      <button onclick="appendChar('4')" class="btn-num">4</button>
+      <button onclick="appendChar('5')" class="btn-num">5</button>
+      <button onclick="appendChar('6')" class="btn-num">6</button>
+      <button onclick="appendChar('-')" class="btn-operator">−</button>
+
+      <button onclick="appendChar('1')" class="btn-num">1</button>
+      <button onclick="appendChar('2')" class="btn-num">2</button>
+      <button onclick="appendChar('3')" class="btn-num">3</button>
+      <button onclick="appendChar('+')" class="btn-operator">+</button>
+
+      <button onclick="appendChar('0')" class="btn-num zero">0</button>
+      <button onclick="appendChar('.')" class="btn-num">.</button>
+      <button onclick="calculate()" class="btn-operator">=</button>
+    </div>
+
   </div>
 
   <script>
     const display = document.getElementById('display');
 
     function appendChar(char) {
-      display.value += char;
+      // If the display is just '0' or 'Error', replace it instead of adding to it
+      if (display.value === '0' || display.value === 'Error') {
+        if (char === '.' || char === '/' || char === '*' || char === '+' || char === '-' || char === '%') {
+          display.value += char; // Keep the zero if they type a decimal or operator first
+        } else {
+          display.value = char;
+        }
+      } else {
+        display.value += char;
+      }
     }
 
     function clearDisplay() {
-      display.value = '';
+      display.value = '0';
     }
 
     function deleteChar() {
-      display.value = display.value.slice(0, -1);
+      if (display.value.length === 1 || display.value === 'Error') {
+        display.value = '0'; // Go back to 0 instead of being totally empty
+      } else {
+        display.value = display.value.slice(0, -1);
+      }
     }
 
     function calculate() {
       try {
-        display.value = eval(display.value);
+        // Evaluate the math (added % logic to handle simple modulo operations)
+        let result = eval(display.value);
+        
+        // Prevent extremely long decimals from breaking the screen
+        if(result.toString().length > 10) {
+            result = parseFloat(result.toFixed(8));
+        }
+        
+        display.value = result;
       } catch {
         display.value = 'Error';
       }
@@ -125,13 +191,14 @@
     document.addEventListener('keydown', (event) => {
       event.preventDefault(); // prevent typing directly
       const key = event.key;
-      if (!isNaN(key) || ['+', '-', '*', '/', '.'].includes(key)) {
+      
+      if (!isNaN(key) || ['+', '-', '*', '/', '.', '%'].includes(key)) {
         appendChar(key);
-      } else if (key === 'Enter') {
+      } else if (key === 'Enter' || key === '=') {
         calculate();
       } else if (key === 'Backspace') {
         deleteChar();
-      } else if (key.toLowerCase() === 'c') {
+      } else if (key.toLowerCase() === 'c' || key === 'Escape') {
         clearDisplay();
       }
     });
